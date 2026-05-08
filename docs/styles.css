@@ -1,0 +1,265 @@
+:root {
+  --bg: #ffffff;
+  --fg: #111111;
+  --muted: #555555;
+  --border: #e7e7e7;
+  --panel: #fafafa;
+  --focus: #1a73e8;
+
+  --sidebar-w: 320px;
+  --content-w: 980px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--fg);
+  background: var(--bg);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+  line-height: 1.65;
+}
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.95em;
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  border-radius: 8px;
+}
+
+.skip-link:focus {
+  left: 12px;
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.layout {
+  min-height: 100vh;
+  display: flex;
+}
+
+.sidebar {
+  width: var(--sidebar-w);
+  border-right: 1px solid var(--border);
+  background: var(--panel);
+}
+
+.sidebar__inner {
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
+  overflow: auto;
+  padding: 16px 14px;
+}
+
+.brand {
+  padding: 8px 10px 14px;
+}
+
+.brand__title {
+  font-weight: 750;
+  font-size: 18px;
+}
+
+.brand__sub {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.notice {
+  margin: 10px 10px 14px;
+  padding: 10px 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+}
+
+.notice__title {
+  font-weight: 650;
+  font-size: 13px;
+}
+
+.notice__body {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.nav {
+  display: grid;
+  gap: 2px;
+  padding: 0 8px;
+}
+
+.nav__link {
+  display: block;
+  padding: 9px 10px;
+  border-radius: 10px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.nav__link:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.nav__link[aria-current="true"] {
+  background: rgba(0, 0, 0, 0.06);
+  font-weight: 650;
+}
+
+.sidebar__footer {
+  padding: 14px 10px 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.content {
+  flex: 1;
+  padding: 34px 26px 48px;
+}
+
+.hero {
+  max-width: var(--content-w);
+  margin: 0 auto 22px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.25;
+  letter-spacing: 0.2px;
+}
+
+.lead {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.section {
+  max-width: var(--content-w);
+  margin: 0 auto;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--border);
+  scroll-margin-top: 16px;
+}
+
+.section h2 {
+  margin: 0 0 10px;
+  font-size: 20px;
+  line-height: 1.35;
+}
+
+.section p {
+  margin: 10px 0;
+}
+
+.key {
+  padding: 10px 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.figure {
+  margin: 14px 0 18px;
+}
+
+.figcaption {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.chart-frame {
+  width: 100%;
+  height: 520px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  /* 内嵌 iframe 文档内已有滚动时，避免宿主容器再出现一层滚动条 */
+  overflow: hidden;
+}
+
+.chart-frame--tall {
+  height: 640px;
+}
+
+/* 图4：森林地图 — 容器高度 500px */
+.chart-frame--forest-map {
+  height: 560px;
+}
+
+/* 图5：天然林 vs 人工林 — 800px */
+.chart-frame--forest-composition {
+  height: 800px;
+}
+
+/* 图6：森林净变化排名 — 800px */
+.chart-frame--forest-ranking {
+  height: 800px;
+}
+
+/* 图7：森林碳汇潜力矩阵 — 500px */
+.chart-frame--forest-matrix {
+  height: 830px;
+}
+
+/* climate-vulnerability-globe：整页用 100vh，嵌入时需更高容器，否则底部 Timeline 会被裁切 */
+.chart-frame--vuln {
+  height: min(88vh, 920px);
+  min-height: 720px;
+}
+
+.questions {
+  margin: 10px 0 0;
+  padding-left: 18px;
+}
+
+.end {
+  margin-top: 12px;
+  font-weight: 650;
+}
+
+.footer {
+  max-width: var(--content-w);
+  margin: 18px auto 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.footer__small {
+  margin-top: 6px;
+  font-size: 12px;
+}
+
+@media (max-width: 980px) {
+  .layout { display: block; }
+  .sidebar {
+    width: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar__inner {
+    position: static;
+    max-height: none;
+  }
+  .content { padding: 18px 16px 40px; }
+  :root { --sidebar-w: auto; }
+}

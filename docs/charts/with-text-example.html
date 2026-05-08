@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>图表与文字排版示例</title>
+  <style>
+    :root { color-scheme: light; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans SC", sans-serif; margin: 24px; line-height: 1.7; }
+    h1 { margin: 0 0 12px; }
+    h2 { margin: 24px 0 8px; font-size: 18px; }
+    p { margin: 10px 0; max-width: 980px; }
+    .chart-block { margin: 14px 0 28px; padding: 12px; border: 1px solid #e5e5e5; border-radius: 12px; background: #fff; }
+    .chart-title { margin: 0 0 10px; font-size: 14px; color: #444; }
+    iframe.chart { width: 100%; border: 0; display: block; }
+    .note { color: #666; font-size: 13px; }
+    code { background: #f3f3f3; padding: 2px 6px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <h1>图表与文字配合（inline embed）</h1>
+  <p class="note">这个页面演示：在同一个 HTML 中，用 <code>div</code> 容器包裹 <code>iframe</code>，并用脚本把原项目页面裁切到“只显示目标图表”。这样你可以在任意段落之间插入图表。</p>
+
+  <h2>例 1：气候诉讼案件分布（地图）</h2>
+  <p>在空间维度上，气候诉讼案件呈现出明显的地域不均衡。下面的地图仅展示目标地图区域，其它 UI 会被隐藏，方便你在论文正文中穿插解释。</p>
+  <div class="chart-block">
+    <div class="chart-title">图：全球气候诉讼案件分布地图</div>
+    <iframe id="litigationMap" class="chart" src="../climate-litigation-visualization/test.html" title="climate-litigation map"></iframe>
+  </div>
+
+  <h2>例 2：森林碳汇潜力矩阵</h2>
+  <p>矩阵图通常用于展示多维度组合（例如变化率与存量）。你可以在这里补充解释象限含义、阈值选择依据等。</p>
+  <div class="chart-block">
+    <div class="chart-title">图：森林碳汇潜力矩阵</div>
+    <iframe id="forestMatrix" class="chart" src="../forest/html/index.html" title="forest matrix"></iframe>
+  </div>
+
+  <h2>例 3：3D 地球（React/Vite build 产物）</h2>
+  <p>对于 React/Vite 的 3D 地球，我已支持 <code>?view=globe</code> / <code>?view=radar</code>，因此可以像普通静态页面一样嵌入。</p>
+  <div class="chart-block">
+    <div class="chart-title">图：ND-GAIN 脆弱性 3D 地球（仅地球视图）</div>
+    <iframe id="vulnGlobe" class="chart" src="./climate-vulnerability-globe/app/index.html?view=globe" title="vulnerability globe"></iframe>
+  </div>
+
+  <script type="module">
+    import { initIframeOnlyShow, autoResizeIframe } from './_wrapper-utils.js';
+
+    // 例 1：裁切 climate-litigation 地图
+    const litigationMap = document.getElementById('litigationMap');
+    initIframeOnlyShow(litigationMap, {
+      targetSelector: '#chart-litigation-map',
+      keepClosestSelector: '.card',
+      hideSelectors: ['header', 'nav', '.controls', '#chart-litigation-trend', '#chart-litigation-category'],
+      waitMs: 500,
+      extraCss: 'html, body { background: #fff !important; }'
+    });
+    autoResizeIframe(litigationMap, { minHeight: 520, maxHeight: 1200 });
+
+    // 例 2：裁切 forest 矩阵（先点击对应 tab 再展示 panel）
+    const forestMatrix = document.getElementById('forestMatrix');
+    initIframeOnlyShow(forestMatrix, {
+      targetSelector: '#chart5-panel',
+      keepClosestSelector: '.panel',
+      clickSelector: '#tab-chart5',
+      waitMs: 800,
+      extraCss: 'html, body { background: #fff !important; }'
+    });
+    autoResizeIframe(forestMatrix, { minHeight: 640, maxHeight: 1600 });
+
+    // 例 3：3D 地球通常需要固定高度更好（这里给一个较大上限）
+    const vulnGlobe = document.getElementById('vulnGlobe');
+    autoResizeIframe(vulnGlobe, { minHeight: 700, maxHeight: 900 });
+  </script>
+</body>
+</html>

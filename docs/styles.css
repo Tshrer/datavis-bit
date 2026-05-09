@@ -52,15 +52,20 @@ code {
 
 .sidebar {
   width: var(--sidebar-w);
+  flex-shrink: 0;
+  /* 不与正文列一起被拉成“整页高度”，否则内层 sticky+overflow 在超长页面下易丢滚动/焦点 */
+  align-self: flex-start;
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
   border-right: 1px solid var(--border);
   background: var(--panel);
 }
 
 .sidebar__inner {
-  position: sticky;
-  top: 0;
-  max-height: 100vh;
-  overflow: auto;
+  position: relative;
   padding: 16px 14px;
 }
 
@@ -201,6 +206,72 @@ code {
   height: 640px;
 }
 
+/* 人均生产/消费 CO₂：工具栏 + Vega 散点 */
+.chart-frame--per-capita-prod-cons {
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+  padding: 0;
+  /* flex 默认 min-width:auto 会令子元素无法收缩，容器宽度可被算成 0，Vega 「container」宽图为空白 */
+  min-width: 0;
+}
+
+.chart-frame__toolbar {
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 18px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+  font-size: 13px;
+}
+
+.chart-frame__toolbar label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--fg);
+}
+
+.chart-frame__toolbar .chart-frame__toolbar-hint {
+  flex: 1 1 200px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.chart-frame__zoom-reset {
+  flex-shrink: 0;
+  padding: 6px 10px;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--fg);
+}
+
+.chart-frame__zoom-reset:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.chart-frame__zoom-reset:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.chart-frame__vega-mount {
+  flex: 1 1 auto;
+  min-height: 420px;
+  min-width: 0;
+  width: 100%;
+  padding: 4px 6px 8px;
+  overflow: hidden;
+}
+
 /* 图4：森林地图 — 容器高度 500px */
 .chart-frame--forest-map {
   height: 560px;
@@ -253,12 +324,15 @@ code {
   .layout { display: block; }
   .sidebar {
     width: auto;
+    align-self: stretch;
+    position: static;
+    max-height: none;
+    overflow: visible;
     border-right: 0;
     border-bottom: 1px solid var(--border);
   }
   .sidebar__inner {
     position: static;
-    max-height: none;
   }
   .content { padding: 18px 16px 40px; }
   :root { --sidebar-w: auto; }

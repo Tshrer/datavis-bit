@@ -1,4 +1,4 @@
-import { initAnnualShareBar, initCumulativeLine } from './climate-visualization.js';
+import { initAnnualShareBar, initCumulativeLine, initProductionConsumptionPerCapita } from './climate-visualization.js';
 import { initIsolatedIframe } from './iframe-embed.js';
 
 function mustGet(selector) {
@@ -14,7 +14,10 @@ async function main() {
   // 2) 年度占比柱状图
   await initAnnualShareBar(mustGet('#embed-cv-annual-share-bar'));
 
-  // 3+) 其余图表使用原图表页面，保证原有交互逻辑不变。
+  // 3) 人均生产侧 vs 消费侧 CO₂（图2 与 环境脆弱度地球之间）
+  await initProductionConsumptionPerCapita(mustGet('#embed-prod-cons-per-capita'));
+
+  // 4+) 其余图表使用原图表页面，保证原有交互逻辑不变。
   initIsolatedIframe(mustGet('#embed-vulnerability-radar'), {
     src: './charts/climate-vulnerability-globe/radar.html',
     title: '全球环境脆弱度（3D地球与雷达联动）',

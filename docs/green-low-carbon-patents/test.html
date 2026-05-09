@@ -10,7 +10,7 @@
         
         body {
             font-family: 'Noto Sans SC', 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #0a1628 0%, #1a2f4a 40%, #0d3d56 100%);
+            background: #ffffff;
             min-height: 100vh;
             padding: 40px 30px;
             position: relative;
@@ -25,8 +25,8 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle at 30% 20%, rgba(0, 176, 155, 0.08) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 80%, rgba(150, 201, 61, 0.06) 0%, transparent 50%);
+            background: radial-gradient(circle at 30% 20%, rgba(0, 176, 155, 0.06) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(150, 201, 61, 0.05) 0%, transparent 50%);
             z-index: 0;
             pointer-events: none;
         }
@@ -60,17 +60,16 @@
         h1 {
             font-size: 2.8rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #00ffd5 0%, #00b09b 50%, #96c93d 100%);
+            background: linear-gradient(135deg, #0d9488 0%, #059669 50%, #65a30d 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 15px;
             letter-spacing: 2px;
-            text-shadow: 0 0 40px rgba(0, 176, 155, 0.3);
         }
         
         .subtitle {
-            color: rgba(255,255,255,0.65);
+            color: #555555;
             font-size: 1.05rem;
             font-weight: 300;
             letter-spacing: 0.5px;
@@ -85,9 +84,9 @@
         }
         
         .stat-card {
-            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            background: #fafafa;
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.12);
+            border: 1px solid #e7e7e7;
             border-radius: 20px;
             padding: 28px 20px;
             text-align: center;
@@ -110,9 +109,8 @@
         
         .stat-card:hover {
             transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.4),
-                        0 0 30px rgba(0, 176, 155, 0.15);
-            border-color: rgba(0, 176, 155, 0.3);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+            border-color: rgba(0, 176, 155, 0.35);
         }
         
         .stat-card:hover::before {
@@ -142,7 +140,7 @@
         }
         
         .stat-label {
-            color: rgba(255,255,255,0.55);
+            color: #555555;
             font-size: 0.88rem;
             font-weight: 400;
             line-height: 1.4;
@@ -157,9 +155,9 @@
         }
         
         .card {
-            background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+            background: #ffffff;
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid #e7e7e7;
             border-radius: 24px;
             padding: 28px;
             position: relative;
@@ -174,14 +172,13 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.08), transparent);
         }
         
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.3),
-                        0 0 40px rgba(0, 176, 155, 0.1);
-            border-color: rgba(0, 176, 155, 0.2);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+            border-color: rgba(0, 176, 155, 0.25);
         }
         
         .card.full-width {
@@ -194,7 +191,7 @@
             gap: 16px;
             margin-bottom: 24px;
             padding-bottom: 18px;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            border-bottom: 1px solid #e7e7e7;
         }
         
         .card-icon {
@@ -222,14 +219,14 @@
         }
         
         .card h3 {
-            color: #ffffff;
+            color: #111111;
             font-size: 1.2rem;
             font-weight: 600;
             margin-bottom: 4px;
         }
         
         .card-subtitle {
-            color: rgba(255,255,255,0.5);
+            color: #737373;
             font-size: 0.82rem;
         }
         
@@ -240,17 +237,16 @@
         /* 工具提示 */
         .tooltip {
             position: fixed;
-            background: linear-gradient(145deg, rgba(20,30,48,0.98), rgba(15,25,45,0.95));
-            color: white;
+            background: #ffffff;
+            color: #111111;
             padding: 14px 18px;
             border-radius: 14px;
             font-size: 13px;
             pointer-events: none;
             opacity: 0;
             z-index: 1000;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5),
-                        inset 0 1px 0 rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+            border: 1px solid #e7e7e7;
             max-width: 240px;
             backdrop-filter: blur(10px);
         }
@@ -262,7 +258,7 @@
             left: 22px;
             border-left: 9px solid transparent;
             border-right: 9px solid transparent;
-            border-bottom: 9px solid rgba(20,30,48,0.95);
+            border-bottom: 9px solid #ffffff;
         }
         
         /* 洞察卡片 */
@@ -290,7 +286,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            color: #00ffd5;
+            color: #0d9488;
             font-size: 1.15rem;
             font-weight: 600;
             margin-bottom: 18px;
@@ -305,13 +301,13 @@
         }
         
         .insight-list li {
-            color: rgba(255,255,255,0.8);
+            color: #374151;
             padding: 10px 0;
             padding-left: 28px;
             position: relative;
             font-size: 0.95rem;
             line-height: 1.7;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid #e7e7e7;
         }
         
         .insight-list li:last-child {
@@ -519,8 +515,8 @@ function drawTechMap() {
     // 渐变背景
     const defs = svg.append("defs");
     const gradient = defs.append("linearGradient").attr("id", "oceanGradient").attr("x1", "0%").attr("y1", "0%").attr("x2", "0%").attr("y2", "100%");
-    gradient.append("stop").attr("offset", "0%").attr("stop-color", "#1a5276");
-    gradient.append("stop").attr("offset", "100%").attr("stop-color", "#154360");
+    gradient.append("stop").attr("offset", "0%").attr("stop-color", "#e8f4fc");
+    gradient.append("stop").attr("offset", "100%").attr("stop-color", "#d4e9f7");
     
     svg.append("rect").attr("width", width).attr("height", height).attr("fill", "url(#oceanGradient)");
     
@@ -540,8 +536,8 @@ function drawTechMap() {
             .data(countries.features)
             .enter().append("path")
             .attr("d", path)
-            .attr("fill", "#2d5a3d")
-            .attr("stroke", "#4a8f6a")
+            .attr("fill", "#c8e6c9")
+            .attr("stroke", "#81c784")
             .attr("stroke-width", 0.5)
             .style("opacity", 0)
             .transition()
@@ -575,7 +571,7 @@ function drawTechMap() {
                     .attr("cx", coords[0]).attr("cy", coords[1])
                     .attr("r", 0)
                     .attr("fill", colorScale(d.patents))
-                    .attr("stroke", "#fff")
+                    .attr("stroke", "#ffffff")
                     .attr("stroke-width", 1.5)
                     .style("cursor", "pointer");
                 
@@ -592,9 +588,9 @@ function drawTechMap() {
                         .attr("text-anchor", "middle")
                         .text(d.country)
                         .style("font-size", "11px")
-                        .style("fill", "#fff")
+                        .style("fill", "#111111")
                         .style("font-weight", "600")
-                        .style("text-shadow", "0 2px 4px rgba(0,0,0,0.8)")
+                        .style("text-shadow", "0 1px 2px rgba(255,255,255,0.9)")
                         .style("opacity", 0)
                         .transition()
                         .delay(1200)
@@ -615,18 +611,18 @@ function drawTechMap() {
         // 图例
         const legendG = svg.append("g").attr("transform", `translate(${width - 120}, ${height - 110})`);
         legendG.append("text").attr("x", 0).attr("y", -5)
-            .text("专利数量").style("font-size", "11px").style("fill", "#fff").style("font-weight", "600");
+            .text("专利数量").style("font-size", "11px").style("fill", "#374151").style("font-weight", "600");
         
         [500, 5000, 50000, 250000].forEach((val, i) => {
             legendG.append("circle").attr("cx", 10).attr("cy", 15 + i * 26).attr("r", sizeScale(val))
-                .attr("fill", colorScale(val)).attr("stroke", "#fff").attr("stroke-width", 1);
+                .attr("fill", colorScale(val)).attr("stroke", "#ffffff").attr("stroke-width", 1);
             legendG.append("text").attr("x", 28).attr("y", 20 + i * 26)
-                .text(val >= 1000 ? `${(val/1000).toFixed(0)}k` : val).style("font-size", "10px").style("fill", "#ddd");
+                .text(val >= 1000 ? `${(val/1000).toFixed(0)}k` : val).style("font-size", "10px").style("fill", "#525252");
         });
         
     }).catch(() => {
         svg.append("text").attr("x", width/2).attr("y", height/2)
-            .attr("text-anchor", "middle").text("地图加载中...").style("fill", "#fff");
+            .attr("text-anchor", "middle").text("地图加载中...").style("fill", "#525252");
     });
 }
 

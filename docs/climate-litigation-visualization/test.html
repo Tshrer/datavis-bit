@@ -8,21 +8,21 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
         :root {
-            --bg-primary: #0a0f1c;
-            --bg-secondary: #111827;
-            --accent-red: #ef4444;
-            --accent-orange: #f97316;
-            --accent-blue: #3b82f6;
-            --accent-cyan: #06b6d4;
-            --accent-green: #10b981;
-            --accent-purple: #8b5cf6;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.3);
-            --shadow-glow: 0 0 60px rgba(239, 68, 68, 0.15);
+            --bg-primary: #ffffff;
+            --bg-secondary: #fafafa;
+            --accent-red: #dc2626;
+            --accent-orange: #ea580c;
+            --accent-blue: #2563eb;
+            --accent-cyan: #0891b2;
+            --accent-green: #059669;
+            --accent-purple: #7c3aed;
+            --text-primary: #111111;
+            --text-secondary: #555555;
+            --text-muted: #737373;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.08);
+            --shadow-glow: 0 0 40px rgba(239, 68, 68, 0.12);
         }
         
         body {
@@ -51,9 +51,9 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle at 20% 80%, rgba(239, 68, 68, 0.08) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
-                        radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 60%);
+            background: radial-gradient(circle at 20% 80%, rgba(239, 68, 68, 0.06) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.06) 0%, transparent 50%),
+                        radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.04) 0%, transparent 60%);
             animation: bgFloat 20s ease-in-out infinite;
         }
         @keyframes bgFloat {
@@ -110,7 +110,7 @@
             letter-spacing: -1px;
         }
         .header h1 .gradient-text {
-            background: linear-gradient(135deg, #fff 0%, #94a3b8 50%, #fff 100%);
+            background: linear-gradient(135deg, #111111 0%, #525252 50%, #111111 100%);
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -190,7 +190,7 @@
             line-height: 1.2;
         }
         .stat-card .number.counting {
-            background: linear-gradient(135deg, #fff, #94a3b8);
+            background: linear-gradient(135deg, #111111, #525252);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -247,7 +247,7 @@
         .card:hover {
             transform: translateY(-5px);
             box-shadow: var(--shadow-soft);
-            border-color: rgba(255, 255, 255, 0.12);
+            border-color: rgba(0, 0, 0, 0.12);
         }
         .card h3 {
             color: var(--text-primary);
@@ -270,7 +270,7 @@
         /* 工具提示 */
         .tooltip {
             position: absolute;
-            background: linear-gradient(135deg, rgba(17, 24, 39, 0.98), rgba(10, 15, 28, 0.98));
+            background: #ffffff;
             backdrop-filter: blur(20px);
             color: var(--text-primary);
             padding: 14px 20px;
@@ -279,8 +279,8 @@
             pointer-events: none;
             opacity: 0;
             z-index: 1000;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
             transform: translateY(-10px) scale(0.95);
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             max-width: 280px;
@@ -446,15 +446,15 @@
             gap: 15px;
         }
         .source-item {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.08);
             border-radius: 12px;
             padding: 16px 20px;
             transition: all 0.3s;
         }
         .source-item:hover {
-            background: rgba(255, 255, 255, 0.04);
-            border-color: rgba(59, 130, 246, 0.3);
+            background: rgba(37, 99, 235, 0.06);
+            border-color: rgba(59, 130, 246, 0.35);
         }
         .source-item strong {
             color: var(--text-primary);
@@ -508,7 +508,7 @@
         }
         
         /* 网格线 */
-        .grid line { stroke: rgba(255, 255, 255, 0.04); stroke-dasharray: 3, 3; }
+        .grid line { stroke: rgba(0, 0, 0, 0.08); stroke-dasharray: 3, 3; }
         .grid path { stroke-width: 0; }
         
         /* 动画计数器 */
@@ -537,7 +537,7 @@
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-primary); }
         ::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.15); }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.25); }
     </style>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://d3js.org/topojson.v3.min.js"></script>
@@ -770,8 +770,8 @@ async function drawMap() {
     // 海洋渐变
     const oceanGrad = defs.append("linearGradient").attr("id", "oceanGrad")
         .attr("x1", "0%").attr("y1", "0%").attr("x2", "100%").attr("y2", "100%");
-    oceanGrad.append("stop").attr("offset", "0%").attr("stop-color", "#0f172a");
-    oceanGrad.append("stop").attr("offset", "100%").attr("stop-color", "#1e3a5f");
+    oceanGrad.append("stop").attr("offset", "0%").attr("stop-color", "#e8eef7");
+    oceanGrad.append("stop").attr("offset", "100%").attr("stop-color", "#dbeafe");
     
     // 发光滤镜
     const glow = defs.append("filter").attr("id", "mapGlow");
@@ -789,7 +789,7 @@ async function drawMap() {
     // 颜色比例
     const colorScale = d3.scaleThreshold()
         .domain([1, 10, 50, 100])
-        .range(["#1e3a5f", "#3b82f6", "#60a5fa", "#93c5fd", "#bfdbfe"]);
+        .range(["#e2e8f0", "#3b82f6", "#60a5fa", "#93c5fd", "#2563eb"]);
     
     const isoMap = {
         "840": "USA", "036": "AUS", "076": "BRA", "826": "GBR", "276": "DEU",
@@ -813,9 +813,9 @@ async function drawMap() {
             .attr("d", path)
             .attr("fill", d => {
                 const c = isoMap[d.id] ? casesByCountry[isoMap[d.id]] : null;
-                return c ? colorScale(c.cases) : "#1e3a5f";
+                return c ? colorScale(c.cases) : "#e2e8f0";
             })
-            .attr("stroke", "#0f172a").attr("stroke-width", 0.5)
+            .attr("stroke", "#94a3b8").attr("stroke-width", 0.5)
             .style("transition", "all 0.3s ease")
             .on("mouseover", function(event, d) {
                 const c = isoMap[d.id] ? casesByCountry[isoMap[d.id]] : null;
@@ -825,7 +825,7 @@ async function drawMap() {
                 else showTooltip(event, "暂无数据");
             })
             .on("mouseout", function() {
-                d3.select(this).attr("stroke", "#0f172a").attr("stroke-width", 0.5).style("filter", null);
+                d3.select(this).attr("stroke", "#94a3b8").attr("stroke-width", 0.5).style("filter", null);
                 hideTooltip();
             });
     } catch (e) { console.log("Map fallback"); }
@@ -845,7 +845,7 @@ async function drawMap() {
         .attr("cy", d => projection([d.lon, d.lat])[1])
         .attr("r", 0)
         .attr("fill", "url(#bubbleGrad)")
-        .attr("stroke", "#fff").attr("stroke-width", 1)
+        .attr("stroke", "#ffffff").attr("stroke-width", 1)
         .attr("opacity", 0.9)
         .on("mouseover", function(event, d) {
             d3.select(this).transition().duration(200).attr("r", bubbleScale(d.cases) * 1.2);
@@ -915,7 +915,7 @@ function drawTrend() {
         .data(cumulativeData)
         .enter().append("circle")
         .attr("cx", d => x(d.year)).attr("cy", d => y(d.cumulative))
-        .attr("r", 0).attr("fill", "#f97316").attr("stroke", "#fff").attr("stroke-width", 2.5)
+        .attr("r", 0).attr("fill", "#f97316").attr("stroke", "#ffffff").attr("stroke-width", 2.5)
         .on("mouseover", function(event, d) {
             d3.select(this).transition().duration(200).attr("r", 12);
             showTooltip(event, `<strong>${d.year}年</strong>累计 ${d.cumulative.toLocaleString()} 起`);
@@ -928,17 +928,17 @@ function drawTrend() {
     
     // 轴
     g.append("g").attr("transform", `translate(0,${h})`).call(d3.axisBottom(x).tickFormat(d3.format("d")).ticks(8))
-        .selectAll("text").style("fill", "rgba(255,255,255,0.6)").style("font-size", "12px");
+        .selectAll("text").style("fill", "#525252").style("font-size", "12px");
     g.append("g").call(d3.axisLeft(y).ticks(6).tickFormat(d => d >= 1000 ? d/1000 + 'k' : d))
-        .selectAll("text").style("fill", "rgba(255,255,255,0.6)").style("font-size", "12px");
-    g.selectAll(".domain").style("stroke", "rgba(255,255,255,0.15)");
-    g.selectAll(".tick line").style("stroke", "rgba(255,255,255,0.15)");
+        .selectAll("text").style("fill", "#525252").style("font-size", "12px");
+    g.selectAll(".domain").style("stroke", "rgba(0,0,0,0.2)");
+    g.selectAll(".tick line").style("stroke", "rgba(0,0,0,0.12)");
     
     // 标签
     g.append("text").attr("x", w/2).attr("y", h+40).attr("text-anchor", "middle")
-        .style("fill", "rgba(255,255,255,0.4)").style("font-size", "13px").text("年份");
+        .style("fill", "#737373").style("font-size", "13px").text("年份");
     g.append("text").attr("transform", "rotate(-90)").attr("x", -h/2).attr("y", -55)
-        .attr("text-anchor", "middle").style("fill", "rgba(255,255,255,0.4)").style("font-size", "13px").text("累计案件数量");
+        .attr("text-anchor", "middle").style("fill", "#737373").style("font-size", "13px").text("累计案件数量");
     
     // 刷选
     const brush = d3.brushX().extent([[0, 0], [w, h]])
@@ -981,7 +981,7 @@ function drawCategoryChart() {
     // 背景条
     g.selectAll(".bg").data(data).enter().append("rect")
         .attr("y", d => y(d.category)).attr("height", y.bandwidth())
-        .attr("x", 0).attr("width", w).attr("fill", "rgba(255,255,255,0.02)").attr("rx", 8);
+        .attr("x", 0).attr("width", w).attr("fill", "rgba(0,0,0,0.04)").attr("rx", 8);
     
     // 数据条
     const colors = colorSets[currentCategoryView];
@@ -1002,16 +1002,16 @@ function drawCategoryChart() {
         .attr("y", d => y(d.category) + y.bandwidth() / 2)
         .attr("dy", "0.35em")
         .style("font-size", "14px").style("font-weight", "600")
-        .style("fill", "#fff")
+        .style("fill", "#111111")
         .text(d => `${d.count.toLocaleString()} 起`);
     
     // 轴
     g.append("g").call(d3.axisLeft(y))
-        .selectAll("text").style("fill", "rgba(255,255,255,0.8)").style("font-size", "13px");
+        .selectAll("text").style("fill", "#374151").style("font-size", "13px");
     g.append("g").attr("transform", `translate(0,${h})`).call(d3.axisBottom(x).ticks(5).tickFormat(d => d >= 1000 ? d/1000 + 'k' : d))
-        .selectAll("text").style("fill", "rgba(255,255,255,0.5)").style("font-size", "11px");
-    g.selectAll(".domain").style("stroke", "rgba(255,255,255,0.1)");
-    g.selectAll(".tick line").style("stroke", "rgba(255,255,255,0.05)");
+        .selectAll("text").style("fill", "#6b7280").style("font-size", "11px");
+    g.selectAll(".domain").style("stroke", "rgba(0,0,0,0.15)");
+    g.selectAll(".tick line").style("stroke", "rgba(0,0,0,0.08)");
 }
 
 function setView(view) {

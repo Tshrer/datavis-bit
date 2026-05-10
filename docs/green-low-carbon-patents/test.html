@@ -608,18 +608,6 @@ function drawTechMap() {
             }
         });
         
-        // 图例
-        const legendG = svg.append("g").attr("transform", `translate(${width - 120}, ${height - 110})`);
-        legendG.append("text").attr("x", 0).attr("y", -5)
-            .text("专利数量").style("font-size", "11px").style("fill", "#374151").style("font-weight", "600");
-        
-        [500, 5000, 50000, 250000].forEach((val, i) => {
-            legendG.append("circle").attr("cx", 10).attr("cy", 15 + i * 26).attr("r", sizeScale(val))
-                .attr("fill", colorScale(val)).attr("stroke", "#ffffff").attr("stroke-width", 1);
-            legendG.append("text").attr("x", 28).attr("y", 20 + i * 26)
-                .text(val >= 1000 ? `${(val/1000).toFixed(0)}k` : val).style("font-size", "10px").style("fill", "#525252");
-        });
-        
     }).catch(() => {
         svg.append("text").attr("x", width/2).attr("y", height/2)
             .attr("text-anchor", "middle").text("地图加载中...").style("fill", "#525252");

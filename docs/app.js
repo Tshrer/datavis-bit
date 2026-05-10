@@ -1,4 +1,14 @@
 (() => {
+  const progressEl = document.querySelector('.scroll-progress');
+
+  function updateScrollProgress() {
+    if (!progressEl) return;
+    const root = document.documentElement;
+    const scrollable = root.scrollHeight - root.clientHeight;
+    const ratio = scrollable > 0 ? root.scrollTop / scrollable : 0;
+    progressEl.style.width = `${Math.min(100, Math.max(0, ratio * 100))}%`;
+  }
+
   const navLinks = Array.from(document.querySelectorAll('.nav__link'));
   const sections = navLinks
     .map((a) => {
@@ -56,12 +66,14 @@
     scrollRaf = requestAnimationFrame(() => {
       scrollRaf = 0;
       updateActiveByScroll();
+      updateScrollProgress();
     });
   }
 
   window.addEventListener('scroll', onScrollOrResize, { passive: true });
   window.addEventListener('resize', onScrollOrResize, { passive: true });
   updateActiveByScroll();
+  updateScrollProgress();
 
   // 点击目录时保持 aria-current 立即更新
   for (const item of sections) {

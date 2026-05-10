@@ -11,6 +11,8 @@ export function initIsolatedIframe(container, {
   src,
   title = '',
   minHeight = 520,
+  /** 与宿主 `.chart-frame` 合成单层圆角时设为 `0`，由外层 overflow 裁切 */
+  iframeBorderRadius = '12px',
 } = {}) {
   if (!container) throw new Error('initIsolatedIframe: container is required');
   if (!src) throw new Error('initIsolatedIframe: src is required');
@@ -28,7 +30,7 @@ export function initIsolatedIframe(container, {
   frame.style.width = '100%';
   frame.style.height = '100%';
   frame.style.border = '0';
-  frame.style.borderRadius = '12px';
+  frame.style.borderRadius = iframeBorderRadius;
   frame.style.display = 'block';
   frame.style.minHeight = `${minHeight}px`;
 

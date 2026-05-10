@@ -1,6 +1,28 @@
 // Minimal helper for chart wrapper pages.
 // Keeps implementation simple (no build step needed).
 
+/**
+ * 嵌入 docs/index 的 `.chart-frame` 时使用：去掉内层 `.card` 的描边与圆角，
+ * 避免与宿主外框 + iframe 圆角形成「双线框」；圆角仅由宿主 `.chart-frame` 承担。
+ */
+export const EMBED_SINGLE_FRAME_CSS = `
+html, body { background: #ffffff !important; }
+[data-charts-keep="1"] {
+  padding: 16px 18px 18px !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  max-width: none !important;
+}
+[data-charts-keep="1"]::before { display: none !important; }
+[data-charts-keep="1"]:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+`.trim();
+
 export function initIframeOnlyShow(frameEl, options) {
   const {
     targetSelector,
@@ -41,14 +63,15 @@ export function initIframeOnlyShow(frameEl, options) {
           "html, body { margin: 0 !important; padding: 0 !important; height: 100% !important; overflow: hidden !important; }",
           "[data-charts-keep=\"1\"] {",
           "  box-sizing: border-box !important;",
-          "  margin: 0 auto !important;",
-          "  max-width: 1200px !important;",
+          "  margin: 0 !important;",
+          "  max-width: none !important;",
+          "  width: 100% !important;",
           "  height: 100vh !important;",
           "  max-height: 100vh !important;",
           "  overflow-y: auto !important;",
           "  overflow-x: hidden !important;",
           "  -webkit-overflow-scrolling: touch;",
-          "  padding: 12px !important;",
+          "  padding: 8px 4px !important;",
           "}",
         ].join("\n");
 

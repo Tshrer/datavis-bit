@@ -44,9 +44,13 @@ export async function initCumulativeLine(container, {
       color: { field: 'Entity' },
       opacity: { condition: { param: 'selectCountry', value: 1 }, value: 0.7 },
       tooltip: [
-        { field: 'Entity' },
-        { field: 'Year' },
-        { field: 'Cumulative CO2 emissions' },
+        { field: 'Entity', title: 'Entity' },
+        { field: 'Year', title: 'Year', format: 'd' },
+        {
+          field: 'Cumulative CO2 emissions',
+          title: 'Cumulative CO2 emissions',
+          format: ',.2f',
+        },
       ],
     },
     config: {
@@ -133,8 +137,8 @@ export async function initAnnualShareBar(container, {
         value: '#bbb',
       },
       tooltip: [
-        { field: 'Entity' },
-        { field: 'share', title: 'Share (%)' },
+        { field: 'Entity', title: 'Entity' },
+        { field: 'share', title: 'Share (%)', format: '.3f' },
       ],
     },
     config: {

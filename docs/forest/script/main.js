@@ -358,8 +358,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
     // expose filtered length for wheel handler and clamp offsets
     try{ window.__chart4_filtered_length__ = filtered.length; }catch(e){}
     // 分页：每页固定 FIXED_ROWS_CHART4 行（数据不足时略少）
-    const margin = {top:28,right:24,bottom:48,left:160};
-    const width = Math.max(720, document.querySelector('#chart4').clientWidth || 900) - margin.left - margin.right;
+    const margin = {top:28,right:20,bottom:48,left:152};
+    const cw = document.querySelector('#chart4')?.clientWidth || 900;
+    const width = Math.max(80, cw - margin.left - margin.right);
     const rowH = 28;
     const perRowSpace = rowH + 8;
     const perPage = Math.min(FIXED_ROWS_CHART4, filtered.length);
@@ -569,11 +570,14 @@ document.addEventListener('DOMContentLoaded', ()=>{
       return [lo, hi];
     }
 
-    // scales & layout：① 绘图区高度优先吃满 #chart5-area；② 坐标轴按数据范围留边，避免大片空白
-    const margin = {top:36,right:24,bottom:96,left:64};
+    // scales & layout：按面板剩余高度计算绘图区，保证 SVG+轴+图例行落在 #chart5-area / iframe 内
+    const margin = {top:30,right:14,bottom:62,left:52};
+    const LEGEND_BELOW_SVG = 38;
     const chart5Root = document.querySelector('#chart5');
     const chart5AreaEl = document.getElementById('chart5-area');
-    const w = Math.max(280, chart5Root?.clientWidth || 900);
+    const chart5Panel = document.getElementById('chart5-panel');
+    const chart5Ctrl = document.getElementById('chart5-controls');
+    const w = Math.max(240, chart5Root?.clientWidth || 900);
     const width = w - margin.left - margin.right;
 
     const xs = rows.map(d=>d.share);
@@ -581,13 +585,18 @@ document.addEventListener('DOMContentLoaded', ()=>{
     let [x0, x1] = paddedDomain(xs, 0.07, 2.5, 0, 100);
     let [y0, y1] = paddedDomain(ys, 0.1, 0.004, null, null);
 
+    const axisFrame = margin.top + margin.bottom;
     let height;
-    if(chart5AreaEl && chart5AreaEl.clientHeight > 140){
-      height = Math.max(260, chart5AreaEl.clientHeight - margin.top - margin.bottom - 48);
+    if(chart5AreaEl && chart5AreaEl.clientHeight > axisFrame + LEGEND_BELOW_SVG + 80){
+      height = chart5AreaEl.clientHeight - axisFrame - LEGEND_BELOW_SVG;
+    } else if(chart5Panel && chart5Panel.offsetParent && chart5Panel.clientHeight > 100){
+      const areaTop = chart5AreaEl ? chart5AreaEl.offsetTop - chart5Panel.offsetTop : 0;
+      const slot = chart5Panel.clientHeight - (chart5Ctrl?.offsetHeight || 52) - 12 - areaTop;
+      height = slot - axisFrame - LEGEND_BELOW_SVG;
     } else {
-      height = Math.max(400, Math.min(720, Math.round(width * 0.82)));
+      height = Math.min(340, Math.max(200, Math.round(width * 0.46)));
     }
-    height = Math.max(240, height - 20);
+    height = Math.max(160, Math.min(height, 440));
 
     const svgTotalH = margin.top + height + margin.bottom;
     const svg = container.append('svg').attr('width','100%').attr('height', svgTotalH);
@@ -672,7 +681,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
     // axes are rendered in outer fixed groups (xAxisG / yAxisG) to avoid duplication
     // axis labels
-    svg.append('text').attr('x', margin.left + width/2).attr('y', margin.top + height + 42).attr('text-anchor','middle').text('森林覆盖率 (%)');
+    svg.append('text').attr('x', margin.left + width/2).attr('y', margin.top + height + 36).attr('text-anchor','middle').text('森林覆盖率 (%)');
     svg.append('text').attr('transform', `translate(14,${margin.top + height/2}) rotate(-90)`).attr('text-anchor','middle').text('年变化率（%）');
 
     // quadrant guides (kept inside zoom layer so they move with data)
@@ -924,8 +933,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const negMin = d3.min(negTop, d=>d.v) || -1;
     const posMax = d3.max(posTop, d=>d.v) || 1;
 
-    const wContainer = Math.max(480, Math.min(1400, document.querySelector('#ranking').clientWidth || 900));
-    const totalInner = Math.max(360, wContainer - 120);
+    const wContainer = Math.max(280, document.querySelector('#ranking')?.clientWidth || 900);
+    const totalInner = Math.max(280, wContainer - 100);
     const centerW = 140;
     const sideW = (totalInner - centerW) / 2; // width for each side svg
     const h = 32;
@@ -1046,8 +1055,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const negMin = d3.min(negTop, d=>d.v) || -1;
     const posMax = d3.max(posTop, d=>d.v) || 1;
 
-    const wContainer = Math.max(480, Math.min(1400, document.querySelector('#ranking').clientWidth || 900));
-    const totalInner = Math.max(360, wContainer - 120);
+    const wContainer = Math.max(280, document.querySelector('#ranking')?.clientWidth || 900);
+    const totalInner = Math.max(280, wContainer - 100);
     const centerW = 140;
     const sideW = (totalInner - centerW) / 2;
     const h = 32;

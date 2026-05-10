@@ -12,14 +12,13 @@
 <body>
   <iframe id="frame" src="../../green-low-carbon-patents/test.html" loading="eager"></iframe>
   <script type="module">
-    import { initIframeOnlyShow } from "../_wrapper-utils.js";
+    import { initIframeOnlyShow, EMBED_SINGLE_FRAME_CSS } from "../_wrapper-utils.js";
 
     initIframeOnlyShow(document.getElementById('frame'), {
       targetSelector: '#chart-tech-map',
       keepClosestSelector: '.card',
       hideSelectors: ['header', '.stats-row', '.insight-box'],
-      extraCss:
-        'html, body { background: #ffffff !important; } [data-charts-keep="1"] { padding: 16px !important; }'
+      extraCss: EMBED_SINGLE_FRAME_CSS,
     });
   </script>
 </body>

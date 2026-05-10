@@ -46,22 +46,27 @@ async function main() {
   initIsolatedIframe(mustGet('#embed-litigation-map'), {
     src: './charts/climate-litigation-visualization/map.html',
     title: '全球气候诉讼分布地图',
+    iframeBorderRadius: '0',
   });
   initIsolatedIframe(mustGet('#embed-litigation-trend'), {
     src: './charts/climate-litigation-visualization/trend.html',
     title: '气候诉讼趋势图',
+    iframeBorderRadius: '0',
   });
   initIsolatedIframe(mustGet('#embed-patents-map'), {
     src: './charts/green-low-carbon-patents/map.html',
     title: '绿色低碳专利分布地图',
+    iframeBorderRadius: '0',
   });
   initIsolatedIframe(mustGet('#embed-patents-bar'), {
     src: './charts/green-low-carbon-patents/bar.html',
     title: '绿色低碳专利分组条形图',
+    iframeBorderRadius: '0',
   });
   initIsolatedIframe(mustGet('#embed-patents-sankey'), {
     src: './charts/green-low-carbon-patents/sankey.html',
     title: '国际技术转让流向桑基图',
+    iframeBorderRadius: '0',
   });
 }
 

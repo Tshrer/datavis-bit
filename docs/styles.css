@@ -117,9 +117,11 @@ code {
   overflow-x: hidden;
   overflow-y: auto;
   border-right: 1px solid var(--border);
-  background: var(--paper);
+  background:
+    linear-gradient(165deg, rgba(255, 252, 247, 0.95) 0%, var(--paper) 45%, rgba(246, 244, 239, 0.98) 100%),
+    linear-gradient(100deg, rgba(13, 148, 136, 0.12) 0%, rgba(13, 148, 136, 0) 40%, rgba(180, 83, 42, 0.06) 100%);
   color: var(--ink);
-  box-shadow: inset -1px 0 0 rgba(20, 26, 34, 0.04);
+  box-shadow: inset -1px 0 0 rgba(20, 26, 34, 0.05);
 }
 
 .sidebar__inner {
@@ -131,14 +133,39 @@ code {
   padding: 22px 16px 20px;
 }
 
-/* 目录区仍在顶部；底部用弹性留白撑满侧栏高度（与正文列等高） */
-.sidebar__inner::after {
-  content: "";
+/* 导航与页脚之间：气候主题图示（弹性增高，贴底展示） */
+.sidebar__climate {
+  order: 3;
   flex: 1 1 auto;
-  min-height: 0;
-  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 5.5rem;
+  margin: 12px 4px 6px 8px;
+  padding: 0;
 }
 
+.sidebar__climate-frame {
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(20, 26, 34, 0.07);
+  background:
+    linear-gradient(165deg, rgba(255, 252, 247, 0.75) 0%, rgba(246, 244, 239, 0.35) 100%),
+    radial-gradient(ellipse 90% 70% at 100% 0%, rgba(251, 191, 36, 0.06) 0%, transparent 55%),
+    radial-gradient(ellipse 120% 80% at 0% 100%, rgba(13, 148, 136, 0.1) 0%, transparent 55%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 1px 3px rgba(20, 26, 34, 0.04);
+  overflow: hidden;
+}
+
+.sidebar__climate-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+/* 左侧边栏装饰条 */
 .sidebar__inner::before {
   content: "";
   position: absolute;
@@ -146,16 +173,37 @@ code {
   top: 0;
   bottom: 0;
   width: 3px;
-  background: var(--accent);
-  opacity: 0.75;
+  background: linear-gradient(180deg, var(--accent) 0%, rgba(13, 148, 136, 0.55) 55%, rgba(180, 83, 42, 0.35) 100%);
+  opacity: 0.85;
   pointer-events: none;
 }
 
 .brand {
+  order: 1;
   flex-shrink: 0;
-  padding: 6px 12px 18px 14px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 14px;
+  padding: 16px 18px 18px 20px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(20, 26, 34, 0.08);
+  background: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(246, 244, 239, 0.7) 100%),
+    linear-gradient(160deg, rgba(13, 148, 136, 0.06) 0%, transparent 50%);
+  margin-bottom: 18px;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 品牌区域顶部装饰线 */
+.brand::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 18px;
+  right: 18px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), rgba(13, 148, 136, 0.3), var(--warm));
+  border-radius: 0 0 2px 2px;
+  opacity: 0.7;
 }
 
 .brand__title {
@@ -165,15 +213,17 @@ code {
   letter-spacing: 0.02em;
   line-height: 1.35;
   color: var(--ink);
+  position: relative;
 }
 
 .brand__sub {
-  margin-top: 8px;
+  margin-top: 10px;
   color: var(--muted);
   font-family: var(--font-sans);
   font-size: 13px;
-  line-height: 1.5;
+  line-height: 1.55;
   font-weight: 500;
+  padding-left: 2px;
 }
 
 .notice {
@@ -197,15 +247,36 @@ code {
 }
 
 .nav {
+  order: 2;
   flex-shrink: 0;
   display: grid;
-  gap: 4px;
-  padding: 0 6px 0 10px;
+  gap: 6px;
+  padding: 0 6px 0 12px;
+  position: relative;
 }
 
+/* 导航标题带图标 */
+.nav::before {
+  content: "章节目录";
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 4px 6px 14px 10px;
+  opacity: 0.9;
+}
+
+/* 导航链接前缀装饰 */
 .nav__link {
-  display: block;
-  padding: 10px 12px 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 14px 11px 16px;
   border-radius: 10px;
   color: var(--ink-soft);
   text-decoration: none;
@@ -214,30 +285,88 @@ code {
   font-weight: 500;
   line-height: 1.4;
   border: 1px solid transparent;
-  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 链接左侧装饰点 */
+.nav__link::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--muted);
+  opacity: 0.4;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
 }
 
 .nav__link:hover {
-  background: rgba(20, 26, 34, 0.05);
+  background: rgba(20, 26, 34, 0.06);
   color: var(--ink);
+  transform: translateX(3px);
+  border-color: rgba(20, 26, 34, 0.06);
+}
+
+.nav__link:hover::before {
+  background: var(--accent);
+  opacity: 1;
+  transform: scale(1.2);
 }
 
 .nav__link[aria-current="true"] {
-  background: var(--accent-soft);
-  border-color: rgba(13, 148, 136, 0.28);
+  background: linear-gradient(135deg, var(--accent-soft) 0%, rgba(13, 148, 136, 0.08) 100%);
+  border-color: rgba(13, 148, 136, 0.25);
   color: var(--ink);
   font-weight: 600;
-  box-shadow: 0 0 0 1px rgba(13, 148, 136, 0.1);
+  box-shadow: 0 0 0 1px rgba(13, 148, 136, 0.1), 0 2px 8px rgba(13, 148, 136, 0.1);
+}
+
+.nav__link[aria-current="true"]::before {
+  background: var(--accent);
+  opacity: 1;
+  box-shadow: 0 0 6px rgba(13, 148, 136, 0.5);
 }
 
 .sidebar__footer {
+  order: 4;
   flex-shrink: 0;
-  padding: 18px 12px 6px 14px;
-  margin-top: 8px;
+  padding: 16px 14px 14px 16px;
+  margin-top: 0;
+  border-top: 1px solid rgba(20, 26, 34, 0.08);
   color: var(--muted);
   font-family: var(--font-sans);
   font-size: 12px;
   line-height: 1.55;
+  position: relative;
+  background: linear-gradient(180deg, rgba(246, 244, 239, 0.3) 0%, transparent 100%);
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+
+/* 页脚无正文时仍保留一条与主题色呼应的装饰线（避免仅剩留白） */
+.sidebar__footer::before {
+  content: "";
+  display: block;
+  width: min(80px, 50%);
+  height: 2px;
+  margin: 0 0 12px 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), rgba(13, 148, 136, 0.2), var(--warm));
+  opacity: 0.5;
+}
+
+/* 页脚装饰元素 */
+.sidebar__footer::after {
+  content: "";
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(circle at center, rgba(13, 148, 136, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
 }
 
 .sidebar__footer code {
@@ -324,6 +453,82 @@ code {
 .section p {
   margin: 12px 0;
   max-width: none;
+}
+
+/* 长文折叠块：<details>，默认收起；图表与标题留在折叠外 */
+.fold {
+  margin: 18px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--paper-elevated);
+  box-shadow: var(--shadow-sm);
+}
+
+.fold__summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 14px 16px 14px 44px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  position: relative;
+  user-select: none;
+}
+
+.fold__summary::-webkit-details-marker {
+  display: none;
+}
+
+.fold__summary::before {
+  content: "";
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  margin-top: -5px;
+  border-right: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+  transform: rotate(45deg);
+  opacity: 0.85;
+  transition: transform 0.2s ease;
+}
+
+details.fold[open] > .fold__summary::before {
+  transform: rotate(225deg);
+  margin-top: -2px;
+}
+
+.fold__summary:hover,
+.fold__summary:focus-visible {
+  color: var(--ink);
+  outline: none;
+}
+
+.fold__summary:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--accent-soft);
+  border-radius: calc(var(--radius-lg) - 1px);
+}
+
+.fold__body {
+  padding: 0 18px 18px 18px;
+  border-top: 1px solid rgba(20, 26, 34, 0.06);
+}
+
+.fold__body > p:first-child {
+  margin-top: 0;
+}
+
+.fold__body > p:last-child {
+  margin-bottom: 0;
+}
+
+.fold__body p.end {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
 }
 
 /* 正文「核心结论」；勿用全局 .key，以免与 Vega 提示里的 td.key 冲突 */
@@ -418,25 +623,9 @@ code {
 .chart-frame--per-capita-prod-cons {
   display: flex;
   flex-direction: column;
-  /* 与脚本中 PLOT_DIM_SCALE=1.1 一致：相对原 600px / 420px min 略放大 */
-  height: 660px;
+  height: 600px;
   padding: 0;
   min-width: 0;
-  /* 轴与图例在脚本里为数据区预留边距；此处裁切圆角外溢 */
-  overflow: hidden;
-}
-
-.chart-frame--per-capita-prod-cons .chart-frame__vega-mount {
-  min-height: 462px;
-  overflow: hidden;
-  padding: 4px 8px 6px 10px;
-}
-
-/* 防止继承样式把 Vega 轴刻度文字画成透明或极浅 */
-.chart-frame--per-capita-prod-cons svg .role-axis text,
-.chart-frame--per-capita-prod-cons svg .role-axis-title text,
-.chart-frame--per-capita-prod-cons svg .role-legend text {
-  fill: #1f2937;
 }
 
 .chart-frame__toolbar {
@@ -520,8 +709,13 @@ code {
   min-height: 720px;
 }
 
+.outro-to-questions {
+  margin: 18px 0 12px;
+  max-width: none;
+}
+
 .questions {
-  margin: 16px 0 0;
+  margin: 0;
   padding: 0;
   list-style: none;
   counter-reset: q;
@@ -605,8 +799,12 @@ code {
     flex: none;
   }
 
-  .sidebar__inner::after {
-    display: none;
+  .sidebar__climate {
+    flex: none;
+    justify-content: flex-start;
+    min-height: 0;
+    margin: 10px 0 12px;
+    max-height: 220px;
   }
 
   .sidebar__inner::before {
@@ -632,4 +830,28 @@ code {
   .hero::after {
     margin-top: 16px;
   }
+}
+
+.chart-frame--per-capita-prod-cons {
+  display: flex;
+  flex-direction: column;
+  /* 与脚本中 PLOT_DIM_SCALE=1.1 一致：相对原 600px / 420px min 略放大 */
+  height: 660px;
+  padding: 0;
+  min-width: 0;
+  /* 轴与图例在脚本里为数据区预留边距；此处裁切圆角外溢 */
+  overflow: hidden;
+}
+
+.chart-frame--per-capita-prod-cons .chart-frame__vega-mount {
+  min-height: 462px;
+  overflow: hidden;
+  padding: 4px 8px 6px 10px;
+}
+
+/* 防止继承样式把 Vega 轴刻度文字画成透明或极浅 */
+.chart-frame--per-capita-prod-cons svg .role-axis text,
+.chart-frame--per-capita-prod-cons svg .role-axis-title text,
+.chart-frame--per-capita-prod-cons svg .role-legend text {
+  fill: #1f2937;
 }

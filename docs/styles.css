@@ -620,6 +620,10 @@ details.fold[open] > .fold__summary::before {
   height: 640px;
 }
 
+.chart-frame--co2 {
+  height: 740px;
+}
+
 .chart-frame--per-capita-prod-cons {
   display: flex;
   flex-direction: column;

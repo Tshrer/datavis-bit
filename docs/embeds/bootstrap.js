@@ -1,4 +1,4 @@
-import { initAnnualShareBar, initCumulativeLine, initProductionConsumptionPerCapita } from './climate-visualization.js';
+import { initAnnualShareBar, initProductionConsumptionPerCapita } from './climate-visualization.js';
 import { initIsolatedIframe } from './iframe-embed.js';
 
 function mustGet(selector) {
@@ -8,11 +8,15 @@ function mustGet(selector) {
 }
 
 async function main() {
-  // 1) 累计 CO2 折线图
-  await initCumulativeLine(mustGet('#embed-cv-cumulative-line'));
-
-  // 2) 年度占比柱状图
+  // 1) 年度占比柱状图
   await initAnnualShareBar(mustGet('#embed-cv-annual-share-bar'));
+
+  // 2) CO₂ 年度 / 人均 / 累计（Plotly，见 docs/co2）
+  initIsolatedIframe(mustGet('#embed-co2'), {
+    src: './co2/index.html',
+    title: 'CO₂ 排放：年度、人均与累计（多国家对比）',
+    minHeight: 700,
+  });
 
   // 3) 人均生产侧 vs 消费侧 CO₂（图2 与 环境脆弱度地球之间）
   await initProductionConsumptionPerCapita(mustGet('#embed-prod-cons-per-capita'));

@@ -418,9 +418,25 @@ code {
 .chart-frame--per-capita-prod-cons {
   display: flex;
   flex-direction: column;
-  height: 600px;
+  /* 与脚本中 PLOT_DIM_SCALE=1.1 一致：相对原 600px / 420px min 略放大 */
+  height: 660px;
   padding: 0;
   min-width: 0;
+  /* 轴与图例在脚本里为数据区预留边距；此处裁切圆角外溢 */
+  overflow: hidden;
+}
+
+.chart-frame--per-capita-prod-cons .chart-frame__vega-mount {
+  min-height: 462px;
+  overflow: hidden;
+  padding: 4px 8px 6px 10px;
+}
+
+/* 防止继承样式把 Vega 轴刻度文字画成透明或极浅 */
+.chart-frame--per-capita-prod-cons svg .role-axis text,
+.chart-frame--per-capita-prod-cons svg .role-axis-title text,
+.chart-frame--per-capita-prod-cons svg .role-legend text {
+  fill: #1f2937;
 }
 
 .chart-frame__toolbar {

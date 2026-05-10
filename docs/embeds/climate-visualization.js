@@ -300,9 +300,11 @@ export async function initProductionConsumptionPerCapita(container, {
       : baselineAxisMax;
 
     const domainMax = Math.max(axisMax, 1e-9);
-    /** 视域始终为以原点为锚的 [0, domainMax]²，避免缩放时重心随数据漂移挤出原点 */
+    /** 略扩展上界，避免最大处的圆点半径画出绘图区裁切线 */
+    const viewMax = domainMax * 1.06;
+    /** 视域以原点为锚；展示域略大于逻辑 max，仍读原始数值 */
     const sharedLinear = {
-      domain: [0, domainMax],
+      domain: [0, viewMax],
       nice: false,
       zero: true,
       clamp: true,
@@ -310,18 +312,48 @@ export async function initProductionConsumptionPerCapita(container, {
 
     const diag = [
       { production: 0, consumption: 0 },
-      { production: domainMax, consumption: domainMax },
+      { production: viewMax, consumption: viewMax },
     ];
-    const chartH = Math.max(360, Math.min(520, mount.clientHeight || 460));
-    const wPx = Math.max(
-      280,
-      Math.round(mount.getBoundingClientRect().width || mount.clientWidth || 320),
-    );
+
+    const box = mount.getBoundingClientRect();
+    const innerW = Math.max(200, mount.clientWidth || box.width || 320);
+    const innerH = Math.max(280, mount.clientHeight || box.height || 360);
+    /**
+     * VL 的 width/height 仅为数据矩形；Y 轴、X 轴与底部横排图例由 Vega 画在矩形外。
+     * 若把矩形撑满容器，轴与刻度会落在框外或被裁掉，故预留边距。
+     */
+    const pad = { left: 82, right: 22, top: 8, bottom: 132 };
+    const availW = Math.max(200, Math.floor(innerW - pad.left - pad.right));
+    const availH = Math.max(240, Math.floor(innerH - pad.top - pad.bottom));
+    const PLOT_DIM_SCALE = 1.1;
+    const wPx = Math.max(200, Math.round(availW * PLOT_DIM_SCALE));
+    const chartH = Math.max(240, Math.round(availH * PLOT_DIM_SCALE));
+
+    const tickFormat = viewMax < 0.35 ? '.2f' : viewMax < 4 ? '.1f' : '.0f';
+    const tickStep = viewMax > 2 ? null : viewMax > 0.5 ? 0.05 : 0.01;
+    const stepOpt = tickStep != null ? { tickMinStep: tickStep } : {};
+
+    /** 坐标轴挂在散点层：后一层若对共享 scale 写 axis:null，合并时可能把整组轴隐藏 */
+    const axisBottom = {
+      orient: 'bottom',
+      title: '生产侧人均 CO₂（吨/人）',
+      format: tickFormat,
+      labelOverlap: false,
+      ...stepOpt,
+    };
+    const axisLeft = {
+      orient: 'left',
+      title: '消费侧人均 CO₂（吨/人）',
+      format: tickFormat,
+      labelOverlap: false,
+      ...stepOpt,
+    };
 
     const spec = {
       $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
       width: wPx,
       height: chartH,
+      autosize: { type: 'pad', contains: 'padding', resize: true },
       /** 必须共享 x/y 比例尺：否则「参考线层」与「散点层」会用不同像素 range，放大后点会挤到一侧 */
       resolve: {
         scale: {
@@ -337,18 +369,23 @@ export async function initProductionConsumptionPerCapita(container, {
           domain: true,
           domainColor: '#222',
           domainWidth: 1.5,
-          tickCount: 8,
+          tickCount: 7,
           labelFontSize: 11,
+          labelColor: '#1f2937',
+          tickColor: '#4b5563',
+          titleColor: '#111827',
           titleFontSize: 12,
           titleFontWeight: 600,
           labelPadding: 6,
+          labelOverlap: false,
         },
         legend: {
-          labelFontSize: 11,
-          titleFontSize: 11,
+          labelFontSize: 10,
+          titleFontSize: 10,
           orient: 'bottom',
           direction: 'horizontal',
         },
+        view: { stroke: '#d1d5db', strokeWidth: 1 },
       },
       layer: [
         {
@@ -364,16 +401,14 @@ export async function initProductionConsumptionPerCapita(container, {
             x: {
               field: 'production',
               type: 'quantitative',
-              title: '生产侧人均 CO₂（吨/人）',
               scale: { ...sharedLinear },
-              axis: { orient: 'bottom' },
+              axis: null,
             },
             y: {
               field: 'consumption',
               type: 'quantitative',
-              title: '消费侧人均 CO₂（吨/人）',
               scale: { ...sharedLinear },
-              axis: { orient: 'left' },
+              axis: null,
             },
           },
         },
@@ -394,7 +429,7 @@ export async function initProductionConsumptionPerCapita(container, {
           mark: {
             type: 'point',
             filled: true,
-            clip: false,
+            clip: true,
             stroke: '#fff',
             strokeWidth: 1,
           },
@@ -402,14 +437,14 @@ export async function initProductionConsumptionPerCapita(container, {
             x: {
               field: 'production',
               type: 'quantitative',
-              axis: null,
               scale: { ...sharedLinear },
+              axis: axisBottom,
             },
             y: {
               field: 'consumption',
               type: 'quantitative',
-              axis: null,
               scale: { ...sharedLinear },
+              axis: axisLeft,
             },
             color: {
               field: 'tradeRole',
@@ -432,8 +467,8 @@ export async function initProductionConsumptionPerCapita(container, {
               value: 0.78,
             },
             size: {
-              condition: { param: 'pick', value: 240 },
-              value: 110,
+              condition: { param: 'pick', value: 180 },
+              value: 78,
               legend: null,
             },
             tooltip: [

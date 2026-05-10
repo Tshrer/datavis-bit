@@ -602,22 +602,25 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const svg = container.append('svg').attr('width','100%').attr('height', svgTotalH);
     // outer with margin transform, and inner zoomable group
     const outer = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
-    const zoomLayer = outer.append('g').attr('class','zoomLayer');
+    /** clip 必须包在「无 zoom 变换」的父组上，否则裁剪框会跟内容一起平移，拖拽时会在轴框边露出虚线端点 */
+    const plotClipId = 'chart5-plot-clip';
+    outer.append('defs').append('clipPath').attr('id', plotClipId).append('rect')
+      .attr('x', 0).attr('y', 0).attr('width', width).attr('height', height);
+    const plotClipWrap = outer.append('g').attr('class', 'chart5-plot-clip-wrap')
+      .attr('clip-path', `url(#${plotClipId})`);
+    const zoomLayer = plotClipWrap.append('g').attr('class', 'zoomLayer');
     const g = zoomLayer; // use g as drawing group
 
     // create axis groups outside the zoom layer so axes stay fixed at edges
     const xAxisG = outer.append('g').attr('class','x axis').attr('transform', `translate(0,${height})`);
     const yAxisG = outer.append('g').attr('class','y axis');
-    let midLine = null;
-    let zeroLine = null;
 
     const x = d3.scaleLinear().domain([x0, x1]).range([0, width]).nice();
     // 纵轴不要用 .nice()：会把上限从约 4% 抬到 5% 等“整齐刻度”，造成顶部无数据的空白带
     const y = d3.scaleLinear().domain([y0, y1]).range([height, 0]);
-    const xd0 = x.domain();
-    const xGuideData = (xd0[0] <= 50 && xd0[1] >= 50) ? 50 : (xd0[0] + xd0[1]) / 2;
-    const yd0 = y.domain();
-    const yGuideData = (yd0[0] <= 0 && yd0[1] >= 0) ? 0 : (yd0[0] + yd0[1]) / 2;
+    /** 竖线：森林覆盖率 50%；横线：年变化率 0（与轴刻度一致，均在 zoomLayer 内用基准 x/y） */
+    const xGuideData = 50;
+    const yGuideData = 0;
 
     // setup zoom behavior and expose to outer controls; axes will be updated via rescaled scales
     const zoom = d3.zoom().scaleExtent([0.3, 8]).translateExtent([[-1000,-1000],[width+1000,height+1000]]).on('zoom', (event)=>{
@@ -660,11 +663,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
         const yFmt = v => (isFinite(v) ? d3.format(`.${Math.max(0,yInfo.precision)}f`)(v * 100) + '%' : '');
         yAxisG.call(d3.axisLeft(newY).tickValues(yTicks).tickFormat(yFmt));
 
-        // update quadrant guide positions（数据坐标固定为 xGuideData / yGuideData）
-        const mid = newX(xGuideData);
-        if(midLine) midLine.attr('x1', mid).attr('x2', mid);
-        const zy = newY(yGuideData);
-        if(zeroLine) zeroLine.attr('y1', zy).attr('y2', zy);
+        // 参考线在 zoomLayer 内：仅用基准 x/y；勿用 newX/newY 更新线位置（坐标系不一致）。
       }catch(e){ /* ignore rescale errors */ }
     });
     svg.call(zoom).on('dblclick.zoom', null);
@@ -684,9 +683,23 @@ document.addEventListener('DOMContentLoaded', ()=>{
     svg.append('text').attr('x', margin.left + width/2).attr('y', margin.top + height + 36).attr('text-anchor','middle').text('森林覆盖率 (%)');
     svg.append('text').attr('transform', `translate(14,${margin.top + height/2}) rotate(-90)`).attr('text-anchor','middle').text('年变化率（%）');
 
-    // quadrant guides (kept inside zoom layer so they move with data)
-    midLine = g.append('line').attr('x1', x(xGuideData)).attr('x2', x(xGuideData)).attr('y1', 0).attr('y2', height).attr('stroke','#ccc').attr('stroke-dasharray','4,4');
-    zeroLine = g.append('line').attr('x1', 0).attr('x2', width).attr('y1', y(yGuideData)).attr('y2', y(yGuideData)).attr('stroke','#ccc').attr('stroke-dasharray','4,4');
+    // 线段在 zoom 局部坐标中尽量加长，由外层 plotClipWrap 裁到固定绘图矩形（与坐标轴围成的区域一致）
+    const guideStroke = '#5a6169';
+    const spanX = width * 200;
+    const spanY = height * 200;
+    const xv = x(xGuideData);
+    const yh = y(yGuideData);
+    const guidesG = g.append('g').attr('class', 'chart5-guides').style('pointer-events', 'none');
+    guidesG.append('line')
+      .attr('x1', xv).attr('x2', xv)
+      .attr('y1', -spanY).attr('y2', spanY)
+      .attr('stroke', guideStroke).attr('stroke-width', 1.25).attr('stroke-dasharray', '5,4')
+      .attr('stroke-linecap', 'butt');
+    guidesG.append('line')
+      .attr('x1', -spanX).attr('x2', spanX)
+      .attr('y1', yh).attr('y2', yh)
+      .attr('stroke', guideStroke).attr('stroke-width', 1.25).attr('stroke-dasharray', '5,4')
+      .attr('stroke-linecap', 'butt');
 
     // color by region
     const regionColors = { 'Tropical':'#2b8c2b', 'Northern':'#1f77b4', 'Southern':'#ff7f0e', 'Other':'#6a6a6a' };
@@ -721,8 +734,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     g.selectAll('.btext').data(labelVisible).join('text').attr('class','btext').attr('x',d=>d.x).attr('y',d=>d.y).attr('dx',d=> (rScale(d.area)+6) ).attr('dy','0.35em').text(d=>d.name ? d.name : d.code).style('font-size','11px').style('pointer-events','none');
     // (临时悬浮标签已移除以避免遮挡小点)
 
-    // set cursor on svg so pointer feedback is consistent
-    svg.style('cursor', 'crosshair');
+    svg.style('cursor', 'default');
 
     // tooltip on hover and bring to front; enlarge hovered bubble slightly
     bubbles.on('mouseenter', function(event,d){
@@ -738,24 +750,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
         geojsonLayer.eachLayer(l=>{ const iso = getFeatureISO3(l.feature); if(iso === d.code) targetLayer = l; });
         if(targetLayer){ try{ leafletMap.fitBounds(targetLayer.getBounds(), { maxZoom:5 }); targetLayer.openTooltip(); }catch(e){} }
       }
-    });
-
-    // move quadrant crosshair to follow mouse pointer within plot area (listen on svg so events fire regardless of target)
-    svg.on('mousemove', function(event){
-      try{
-        const pt = d3.pointer(event, outer.node()); // coordinates in outer (fixed) space
-        const t = d3.zoomTransform(_chart5Svg.node());
-        const invX = (pt[0] - t.x) / t.k; // transform to zoomLayer coordinates
-        const invY = (pt[1] - t.y) / t.k;
-        if(midLine) midLine.attr('x1', invX).attr('x2', invX);
-        if(zeroLine) zeroLine.attr('y1', invY).attr('y2', invY);
-      }catch(e){ }
-    });
-    svg.on('mouseleave', function(){
-      const defaultMid = x(xGuideData);
-      const defaultZero = y(yGuideData);
-      if(midLine) midLine.attr('x1', defaultMid).attr('x2', defaultMid);
-      if(zeroLine) zeroLine.attr('y1', defaultZero).attr('y2', defaultZero);
     });
 
     // legend
